@@ -19,7 +19,6 @@ exports.login = async (req, res) => {
                 username: req.body.username
             }
         });
-        const password = bcrypt.hashSync(req.body.password, key.salt);
         try {
             const isMatch = await bcrypt.compare(req.body.password, emp.getDataValue('password'));
             if (isMatch) {

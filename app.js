@@ -1,17 +1,19 @@
 require('./config/appConfig');
 
 const express = require('express');
-const bodyParser = require('body-parser');
 const sequelize = require('./util/database');
 const { notFound, convertError } = require('./middleware/errorMiddleware')
 
 const Employee = require('./models/employees');
 const Department = require('./models/departments');
+const Role = require('./models/roles');
 const EmpDept = require('./models/employeeDepartment');
+const EmpRole = require('./models/employeeRoles');
 
 const empRoutes = require('./routes/employees');
 const depRoutes = require('./routes/departments');
 const loginRoute = require('./routes/login');
+const roleRoute = require('./routes/roles');
 
 
 /**
@@ -21,12 +23,13 @@ const loginRoute = require('./routes/login');
 const app = express();
 
 // parse body params and attaches them to req.body
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // API routes
 app.use('/employees', empRoutes);
 app.use('/departments', depRoutes);
+app.use('/roles', roleRoute);
 app.use('/login', loginRoute);
 
 // Error Middlewares
@@ -49,9 +52,25 @@ EmpDept.belongsTo(Department, {
     onDelete: 'CASCADE'
 });
 
+// Employee.hasMany(EmpRoles)
+EmpRole.belongsTo(Employee, {
+    foreignKey: {
+        name: 'empId',
+    },
+    onDelete: 'CASCADE'
+})
+
+// Role.hasMany(EmpRoles)
+EmpRole.belongsTo(Role, {
+    foreignKey: {
+        name: 'roleId',
+    },
+    onDelete: 'CASCADE'
+})
+
 
 sequelize
-    .sync()
+    .sync({force:true})
     .then(result => {
         console.log('Listening for requests at http://localhost:7001');
         app.listen(7001);

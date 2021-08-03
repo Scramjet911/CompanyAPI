@@ -1,5 +1,6 @@
 const Employee = require('../models/employees');
 const EmpDept = require('../models/employeeDepartment');
+const EmpRole = require('../models/employeeRoles')
 const bcrypt = require('bcrypt');
 const loginConstants =  require('../constants/login.constants');
 
@@ -137,3 +138,24 @@ exports.deleteEmployee = (req, resp, next) => {
             });
         });
 };
+
+exports.allocateRoles = (req, res) => {
+    const empId = req.params.id;
+    const roleId = req.body.roleId;
+    EmpRole.create({
+      empId: empId,
+      roleId: roleId
+    })
+    .then((empRole) => {
+      res.status(200).json({
+        message: 'Role allocated successfullly',
+      })
+    })
+    .catch((err) => {
+      console.log(err)
+      res.status(404).json({
+        message: 'Role allocation failed',
+      })
+    })
+  }
+  
