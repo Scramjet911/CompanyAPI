@@ -41,11 +41,18 @@ const postEmployeeDepartmentBodySchema = {
     }).unknown(false)
 }
 
+const createRoleSchema = {
+    body: joi.object().keys(({
+        name: joi.string().max(128).required()
+    })).unknown(false)
+}
+
 module.exports = {
     idParamsSchema,
     postEmployeeBodySchema,
     editEmployeeBodySchema,
     postDepartmentBodySchema,
     editDepartmentBodySchema,
-    postEmployeeDepartmentBodySchema
+    postEmployeeDepartmentBodySchema,
+    createRoleSchema,
 };

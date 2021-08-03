@@ -32,6 +32,10 @@ router.get('/:id/departments', empController.getEmployeeDepartments);
 // POST => /employees/id/departments
 router.post('/:id/departments', validate(postEmployeeDepartmentBodySchema), empController.postEmployeeDepartment);
 
-router.post('/:id/roles', empController.allocateRoles)
+router.post('/:id/roles', empController.allocateRoles);
+
+router.post('/:id/address', empController.addAddress);
+
+router.put('/:id/address', empController.editAddress);
 
 module.exports = router;

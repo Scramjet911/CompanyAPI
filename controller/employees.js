@@ -3,6 +3,7 @@ const EmpDept = require('../models/employeeDepartment');
 const EmpRole = require('../models/employeeRoles')
 const bcrypt = require('bcrypt');
 const loginConstants =  require('../constants/login.constants');
+const EmpAddr = require('../models/employeeAddress');
 
 exports.getAllEmployees = (req, resp, next) => {
     Employee.findAll()
@@ -120,6 +121,66 @@ exports.editEmployee = (req, resp, next) => {
             });
         });
 };
+
+exports.addAddress = (req, res, next) => {
+    const empId = req.params.id;
+    const housename = req.body.housename;
+    const street = req.body.street;
+    const city = req.body.city;
+    const state = req.body.state;
+    const pincode = req.body.pincode;
+    EmpAddr.create({
+        empId: empId,
+        housename: housename,
+        street: street,
+        city: city,
+        state: state,
+        pincode: pincode,
+    }).then(address => {
+        res.status(200).json({
+            message: 'Address added successfully',
+            address
+        });
+    }).catch(err => {
+        console.log(err);
+        res.status(404).json({
+            message: 'Address addition failed'
+        });
+    });
+}
+
+exports.editAddress = (req, res, next) => {
+    const empId = req.params.id;
+    const housename = req.body.housename;
+    const street = req.body.street;
+    const city = req.body.city;
+    const state = req.body.state;
+    const pincode = req.body.pincode;
+    EmpAddr.findByPk(empId).then((empaddr) => {
+        if(empaddr){
+            empaddr.housename = housename;
+            empaddr.street = street;
+            empaddr.city = city;
+            empaddr.state = state;
+            empaddr.pincode = pincode;
+            return empaddr.save();
+        }
+        else{
+            return null;
+        }
+    }).then(() => {
+        res.status(200).json({
+            message: 'Address edited succesfully'
+        });
+    }).catch(err => {
+        console.log(err);
+        res.status(404).json({
+            message: 'Address editing failed'
+        });
+    });
+}
+
+exports
 
 exports.deleteEmployee = (req, resp, next) => {
     const id = req.params.id;

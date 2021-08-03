@@ -1,10 +1,12 @@
-const express = require('express')
+const express = require('express');
+const validate = require('express-validation');
 const roleController = require('../controller/roles')
 const router = express.Router()
+const {createRoleSchema} = require('../validation/joiRequestValidation');
 
 router.get('/', roleController.getAllRoles)
 
-router.post('/', roleController.createRole)
+router.post('/', validate(createRoleSchema), roleController.createRole)
 
 router.put('/:id', roleController.updateRole)
 
