@@ -156,7 +156,10 @@ exports.editAddress = (req, res, next) => {
     const city = req.body.city;
     const state = req.body.state;
     const pincode = req.body.pincode;
-    EmpAddr.findByPk(empId).then((empaddr) => {
+    EmpAddr.findOne({
+        where: {empId: empId}
+    })
+    .then((empaddr) => {
         if(empaddr){
             empaddr.housename = housename;
             empaddr.street = street;
