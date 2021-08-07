@@ -70,7 +70,7 @@ EmpRole.belongsTo(Role, {
 
 
 sequelize
-    .sync({force:true})
+    .sync()
     .then(result => {
         console.log('Listening for requests at http://localhost:7001');
         app.listen(7001);
