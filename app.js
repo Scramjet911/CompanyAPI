@@ -14,6 +14,7 @@ const empRoutes = require('./routes/employees');
 const depRoutes = require('./routes/departments');
 const loginRoute = require('./routes/login');
 const roleRoute = require('./routes/roles');
+const EmpAddr = require('./models/employeeAddress');
 
 
 /**
@@ -68,6 +69,13 @@ EmpRole.belongsTo(Role, {
     onDelete: 'CASCADE'
 })
 
+// Employee.hasOne(Address)
+EmpAddr.belongsTo(Employee, {
+    foreignKey: {
+        name: 'empId',
+    },
+    onDelete: 'CASCADE',
+})
 
 sequelize
     .sync()
